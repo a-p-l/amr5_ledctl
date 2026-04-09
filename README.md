@@ -43,7 +43,7 @@ cl /O2 /MT amr5_ledctl_win.c /Fe:amr5_ledctl_win.exe /link /SUBSYSTEM:WINDOWS us
 ### Scheduled Task Example
 
 ```powershell
-schtasks /create /tn "Turn off LEDs (AMR5)" /tr "\"C:\path\to\amr5_ledctl_win.exe\" off" /sc onlogon /rl highest /f
+schtasks /create /tn "Turn off LEDs (AMR5)" /tr "\"C:\path\to\amr5_ledctl_win.exe\" off" /sc onlogon /delay 0000:15 /rl highest /f
 schtasks /run /tn "Turn off LEDs (AMR5)"
 schtasks /delete /tn "Turn off LEDs (AMR5)" /f
 ```
