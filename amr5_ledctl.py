@@ -84,7 +84,7 @@ def apply_mode(io: PortIO, mode: str) -> None:
 
 def main() -> int:
     parser = argparse.ArgumentParser(
-        description="Set Acemagic AMR5 LED mode via direct I/O ports"
+        description="Set ACEMAGIC AMR5 LED mode via direct I/O ports"
     )
     parser.add_argument(
         "mode",

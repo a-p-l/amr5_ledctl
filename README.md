@@ -1,10 +1,11 @@
-# Acemagic AMR5 MiniPC LED Control
+# ACEMAGIC AMR5 Mini PC LED Control
 
-Tools for switching Acemagic AMR5 LED modes through direct I/O port writes on Windows and Linux.
+Tools for switching ACEMAGIC AMR5 LED modes through direct I/O port writes on Windows and Linux.
 
 ## Repository Contents
 
 - `amr5_ledctl.py`: Linux CLI using `/dev/port`
+- `amr5_ledctl.ps1`: Windows PowerShell script using `inpoutx64.dll`
 - `amr5_ledctl_win.c`: Windows x64 GUI-style entrypoint using `inpoutx64.dll`
 - `inpoutx64.dll`: bundled third-party x64 DLL used by `amr5_ledctl_win.c`
 
@@ -16,14 +17,16 @@ Run as root. `amr5_ledctl.py` supports `--devport` if `/dev/port` is exposed at 
 
 ```bash
 sudo python amr5_ledctl.py off
-sudo python amr5_ledctl.py rainbow --devport /dev/port
+sudo python amr5_ledctl.py rainbow
 ```
 
 ## Windows Usage
 
-Must run as Administrator with `inpoutx64.dll` in the same directory.
+Run as Administrator with `inpoutx64.dll` in the same directory.
 
 ```powershell
+C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -ExecutionPolicy Bypass -File .\amr5_ledctl.ps1 off
+C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -ExecutionPolicy Bypass -File .\amr5_ledctl.ps1 rainbow
 .\amr5_ledctl_win.exe off
 .\amr5_ledctl_win.exe rainbow
 ```
@@ -40,14 +43,14 @@ cl /O2 /MT amr5_ledctl_win.c /Fe:amr5_ledctl_win.exe /link /SUBSYSTEM:WINDOWS us
 ### Scheduled Task Example
 
 ```powershell
-schtasks /create /tn "AMR5 LED Off" /tr "\"C:\path\to\amr5_ledctl_win.exe\" off" /sc onlogon /rl highest /f
-schtasks /run /tn "AMR5 LED Off"
-schtasks /delete /tn "AMR5 LED Off" /f
+schtasks /create /tn "Turn off LEDs (AMR5)" /tr "\"C:\path\to\amr5_ledctl_win.exe\" off" /sc onlogon /rl highest /f
+schtasks /run /tn "Turn off LEDs (AMR5)"
+schtasks /delete /tn "Turn off LEDs (AMR5)" /f
 ```
 
 ### Uninstall
 
-To remove the driver use an elevated terminal and do this:
+To remove the driver, use an elevated terminal and run:
 
 ```powershell
 sc.exe query inpoutx64
@@ -62,9 +65,13 @@ del /f C:\Windows\System32\drivers\inpoutx64.sys
 ## Notes
 
 - `static` and `button` use a short delay before the final mode write on all implementations.
-- `amr5_ledctl_win.c` uses `inpoutx64.dll`.
-- `inpoutx64.dll` report version `1.5.0.0`. Their file metadata marks them as `Freeware`.
-- This repository is MIT-licensed, but the bundled DLLs should be treated as separate third-party dependencies unless you verify and document their license terms explicitly.
+- `amr5_ledctl_win.c` and `amr5_ledctl.ps1` use `inpoutx64.dll`.
+- `inpoutx64.dll` reports version `1.5.0.0`.
+
+## References
+
+- [inpoutx64 driver](https://www.highrez.co.uk/downloads/inpout32/default.htm) –
+  Windows userspace I/O port access driver.
 
 ## License
 
