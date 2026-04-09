@@ -1,0 +1,4 @@
+# Build output
+amr5_ledctl
+amr5_ledctl.exe
+*.o
